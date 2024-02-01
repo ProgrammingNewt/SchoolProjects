@@ -12,13 +12,14 @@ private:
     int health;
     int attack;
     int defense;
+    int level;
 
     Move moves[4];
-    
 
 public:
     
     Pokemon();
+    
     Pokemon(string name, string type, int health, int attack, int defense, Move move1, Move move2, Move move3, Move move4);
 
     string getName() const;
@@ -47,7 +48,19 @@ public:
 
     void receiveDamage(int damage);
 
+    string displayName();
+
     void displayHealth() const;
+
+    void levelUp(int levels);
+
+    void setLevel(int newLevel);
+
+    int getLevel() const; 
+
+    virtual void emote();
+    
+    
 };
 
 #endif

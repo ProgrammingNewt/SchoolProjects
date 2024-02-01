@@ -7,14 +7,14 @@ using namespace std;
 
 Pokemon::Pokemon(){
 
-    name = "decault name";
+    name = "default name";
 
     type = "nothing";
 
     health = 100;
     attack = 10;
     defense = 10;
-
+    level = 0;
 }
 Pokemon::Pokemon(string nameVal, string typeVal, int healthVal, int attackVal, int defenseVal, Move move1, Move move2, Move move3, Move move4){
 
@@ -27,6 +27,10 @@ Pokemon::Pokemon(string nameVal, string typeVal, int healthVal, int attackVal, i
     attack = attackVal;
 
     defense = defenseVal;
+
+    level = 0;
+
+    
 
     moves[0] = move1;
     moves[1] = move2;
@@ -76,6 +80,7 @@ int Pokemon::getDefense() const {
     return defense;
 }
 
+
 void Pokemon::setName(const string &nameVal) {
 
     name = nameVal;
@@ -103,68 +108,50 @@ void Pokemon::setDefense(int defenseVal) {
 
 
 void Pokemon::performMove(Pokemon &target, int moveIndex) {
-
     if (moveIndex < 0 || moveIndex >= 4) {
-
         cout << "Not valid move" << endl;
-
         return;
     }
 
     Move moveToPerform = moves[moveIndex];
 
+    double typeEffectiveness = 1;
 
-    double typeEffectiveness = 1; 
-
-    
-    if (moveToPerform.getType() == "Fire" ) {
-
+    if (moveToPerform.getType() == "Fire") {
         if (target.getType() == "Grass") {
-
             typeEffectiveness = 2;
-
+            cout << "Its super effective! " << endl;
         } else if (target.getType() == "Fire" || target.getType() == "Water") {
-            
             typeEffectiveness = 0.5;
+            cout << "Not very effective... " << endl;
         }
-    } 
-    
-    else if (moveToPerform.getType() == "Grass") {
-
+    } else if (moveToPerform.getType() == "Grass") {
         if (target.getType() == "Water") {
-
             typeEffectiveness = 2;
-
-        } 
-        
-        else if (target.getType() == "Grass" || target.getType() == "Fire") {
-
+            cout << "Its super effective! " << endl;
+        } else if (target.getType() == "Grass" || target.getType() == "Fire") {
             typeEffectiveness = 0.5;
+            cout << "Not very effective... " << endl;
         }
-    }
-    else if (moveToPerform.getType() == "Water") {
-
+    } else if (moveToPerform.getType() == "Water") {
         if (target.getType() == "Fire") {
-
             typeEffectiveness = 2;
-
-        } 
-        else if (target.getType() == "Water" || target.getType() == "Grass") {
+            cout << "Its super effective! " << endl;
+        } else if (target.getType() == "Water" || target.getType() == "Grass") {
             typeEffectiveness = 0.5;
+            cout << "Not very effective... " << endl;
         }
     }
 
-    int damage = (moveToPerform.getDamage() + attack) * typeEffectiveness - target.getDefense();
+    int damage = static_cast<int>((moveToPerform.getDamage() + attack) * typeEffectiveness) - target.getDefense();
 
-
-    if(damage <= 0){
-
+    if (damage <= 0) {
         damage = 0;
     }
-    
 
     target.receiveDamage(damage);
 }
+
 
 void Pokemon::receiveDamage(int damage) {
 
@@ -180,4 +167,27 @@ void Pokemon::displayHealth() const {
 
     cout << name << " - HP: " << health << endl;
 
+}
+
+void Pokemon::levelUp(int levels) {
+    
+    level = level + levels;
+
+}
+
+int Pokemon::getLevel() const {
+    return level;
+}
+
+void Pokemon::setLevel(int newLevel) {
+
+    level = newLevel;
+}
+
+string Pokemon::displayName(){
+    return name;
+}
+void Pokemon::emote() {
+
+    cout << "I am a normal Pokemon, fear me!!" << endl;
 }
